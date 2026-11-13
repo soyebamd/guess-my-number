@@ -8,6 +8,8 @@ let highscoreInit = 0;
 
 let score = 10;
 
+let isWin = false;
+
 //score display
 let scroreDisplay = document.querySelector('.score');
 scroreDisplay.textContent = score;
@@ -22,11 +24,18 @@ GuessNumber.textContent = '?';
 
 //message
 let message = document.querySelector('.message');
-message.textContent = 'Start Number guessing...';
+
+const messageContent = function (statusMessage) {
+  message.textContent = statusMessage;
+};
+
+messageContent('Start Number guessing...');
 
 const inputNumberField = document.querySelector('.guess');
 
-document.querySelector('.check').addEventListener('click', function () {
+const checkButton = document.querySelector('.check');
+
+checkButton.addEventListener('click', function () {
   const guessNumber = Number(inputNumberField.value);
 
   function scoreComponent() {
@@ -34,41 +43,46 @@ document.querySelector('.check').addEventListener('click', function () {
     if (score <= 0) {
       score = 0;
       GuessNumber.textContent = initNumber;
-      message.textContent = '😔 You Loss';
+      messageContent('😔 You Loss');
       document.body.style.backgroundColor = 'red';
     }
   }
 
   function scoreStatus(status) {
-    message.textContent = status;
+    messageContent(status);
     scoreComponent();
-
     scroreDisplay.textContent = score;
   }
 
   // start logic here
 
   if (!guessNumber) {
-    message.textContent = '🫗  Guess number is empty ';
+    messageContent('🫗 Guess number is empty ');
   } else if (guessNumber > initNumber) {
     scoreStatus('📈 Too high');
   } else if (guessNumber < initNumber) {
     scoreStatus('📉 Too low');
   } else {
-    message.textContent = '😍 Matched. You win!';
+    messageContent('😍 Matched. You win!');
+    isWin = true;
     highscoreInit = score;
     highScoreDisplay.textContent = highscoreInit;
     document.body.style.backgroundColor = 'green';
     GuessNumber.textContent = initNumber;
   }
+
+  if (isWin) {
+    checkButton.disabled = true;
+    inputNumberField.disabled = true;
+  }
 });
 
 playAgain.addEventListener('click', function () {
   console.log('play again');
-  score = 20;
+  score = 10;
   scroreDisplay.textContent = score;
   inputNumberField.value = '';
   GuessNumber.textContent = '?';
-  message.textContent = 'Start Number guessing...';
+  messageContent('Start Number guessing...');
   document.body.style.backgroundColor = '';
 });
