@@ -5,6 +5,7 @@ let initNumber = Math.trunc(Math.random() * 20) + 1;
 const playAgain = document.querySelector('.again');
 
 let highscoreInit = 0;
+
 let score = 20;
 
 //score display
@@ -17,7 +18,7 @@ highScoreDisplay.textContent = highscoreInit;
 
 //guess number
 let GuessNumber = document.querySelector('.number');
-GuessNumber.textContent = initNumber;
+GuessNumber.textContent = '?';
 
 //message
 let message = document.querySelector('.message');
@@ -28,34 +29,34 @@ const inputNumberField = document.querySelector('.guess');
 document.querySelector('.check').addEventListener('click', function () {
   const guessNumber = Number(inputNumberField.value);
 
+  function scoreComponent() {
+    score--;
+    if (score <= 0) {
+      score = 0;
+      message.textContent = '😔 You Loss';
+      document.body.style.backgroundColor = 'red';
+    }
+  }
+
+  function scoreStatus(status) {
+    scoreComponent();
+    message.textContent = status;
+    scroreDisplay.textContent = score;
+  }
+
   // start logic here
 
   if (!guessNumber) {
     message.textContent = '🫗  Guess number is empty ';
   } else if (guessNumber > initNumber) {
-    message.textContent = '📈 Too high';
-    if (score <= 0) {
-      score = 0;
-      message.textContent = '😔 You Loss';
-    } else {
-      score--;
-    }
-
-    scroreDisplay.textContent = score;
+    scoreStatus('📈 Too high');
   } else if (guessNumber < initNumber) {
-    message.textContent = '📉 Too low';
-    if (score <= 0) {
-      score = 0;
-      message.textContent = '😔 You Loss';
-    } else {
-      score--;
-    }
-
-    scroreDisplay.textContent = score;
+    scoreStatus('📉 Too low');
   } else {
-    message.textContent = '😍 Matched';
+    message.textContent = '😍 Matched. You win!';
     highscoreInit = score;
     highScoreDisplay.textContent = highscoreInit;
+    document.body.style.backgroundColor = 'green';
   }
 });
 
@@ -64,7 +65,7 @@ playAgain.addEventListener('click', function () {
   score = 20;
   scroreDisplay.textContent = score;
   inputNumberField.value = '';
-  initNumber = Math.trunc(Math.random() * 20) + 1;
-  GuessNumber.textContent = initNumber;
+  GuessNumber.textContent = '?';
   message.textContent = 'Start Number guessing...';
+  document.body.style.backgroundColor = '';
 });
