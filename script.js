@@ -6,7 +6,7 @@ const playAgain = document.querySelector('.again');
 
 let highscoreInit = 0;
 
-let score = 20;
+let score = 10;
 
 //score display
 let scroreDisplay = document.querySelector('.score');
@@ -33,14 +33,16 @@ document.querySelector('.check').addEventListener('click', function () {
     score--;
     if (score <= 0) {
       score = 0;
+      GuessNumber.textContent = initNumber;
       message.textContent = '😔 You Loss';
       document.body.style.backgroundColor = 'red';
     }
   }
 
   function scoreStatus(status) {
-    scoreComponent();
     message.textContent = status;
+    scoreComponent();
+
     scroreDisplay.textContent = score;
   }
 
@@ -57,6 +59,7 @@ document.querySelector('.check').addEventListener('click', function () {
     highscoreInit = score;
     highScoreDisplay.textContent = highscoreInit;
     document.body.style.backgroundColor = 'green';
+    GuessNumber.textContent = initNumber;
   }
 });
 
